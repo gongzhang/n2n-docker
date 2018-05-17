@@ -1,12 +1,15 @@
-FROM centos:7
+FROM alpine:3.7 AS build
 
-MAINTAINER <pahudnet@gmail.com>
+RUN apk add --no-cache --update git make gcc linux-headers musl-dev openssl-dev
 
-WORKDIR /root
+WORKDIR /n2n
+RUN git clone https://github.com/ntop/n2n.git /n2n
+RUN make && make install
 
-RUN yum update -y && \
-    yum groupinstall "Development Tools" -y && \
-    yum install openssl-devel svn net-tools -y && \
-    svn co https://shop.ntop.org/svn/ntop/trunk/n2n && \
-    cd n2n/n2n_v2 && make && make install && \
-    yum groupremove "Development Tools"  -y && rm -rf /root/n2n /var/cache/yum/*
+
+FROM alpine:3.7
+
+RUN apk add --no-cache --update openssl
+
+COPY --from=build /usr/sbin/edge /usr/sbin/edge
+COPY --from=build /usr/sbin/supernode /usr/sbin/supernode
