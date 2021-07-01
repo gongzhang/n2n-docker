@@ -4,7 +4,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 RUN apk add --no-cache --update git make gcc linux-headers musl-dev openssl-dev
 
 WORKDIR /n2n
-RUN git clone https://github.com/ntop/n2n.git /n2n
+RUN git clone -b 2.4-stable https://github.com/ntop/n2n.git /n2n
 RUN make && make install
 
 
