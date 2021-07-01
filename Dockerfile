@@ -1,5 +1,6 @@
 FROM alpine:3.7 AS build
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 RUN apk add --no-cache --update git make gcc linux-headers musl-dev openssl-dev
 
 WORKDIR /n2n
